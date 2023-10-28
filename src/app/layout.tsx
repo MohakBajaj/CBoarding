@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Navbar } from '@/components/navbar'
+import { Sidebar } from "@/components/sidebar";
 
 export const metadata: Metadata = {
   title: 'CBoarding',
@@ -27,7 +29,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Navbar />
+          <div id="Main" className="flex w-full gap-8 h-[92.26vh]">
+            <Sidebar />
+            <div id="Content" className="w-full h-full overflow-clip">
+              {children}
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>
