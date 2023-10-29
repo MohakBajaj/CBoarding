@@ -30,7 +30,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <div id="Main" className="flex w-full gap-8 h-[92.26vh]">
+          <div id="Main" className="flex w-full gap-3 h-[92.26vh]">
             <Sidebar />
             <div id="Content" className="w-full h-full overflow-clip">
               {children}

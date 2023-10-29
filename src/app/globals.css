@@ -79,3 +79,7 @@
   width: 0.3rem;
   background: var(--background);
 }
+
+.no-scrollbar::-webkit-scrollbar{
+  width: 0rem;
+}
