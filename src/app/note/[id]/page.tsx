@@ -2,6 +2,7 @@
 import { Editor } from "@/components/Editor"
 import { Button } from "@/components/ui/button"
 import { File, EditIcon, Trash2 } from 'lucide-react'
+import { useEffect, useState } from "react";
 
 function exportToPDF() {
     const title = document.querySelector('#title')!;
@@ -23,7 +24,10 @@ function exportToPDF() {
 
 
 export default function Note({ params }: { params: { id: string } }) {
-    const title = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes') || '[]').find((note: Note) => note.id === params.id)?.title : 'Untitled'
+    const [title, setTitle] = useState('Untitled')
+    useEffect(() =>
+        setTitle(JSON.parse(localStorage.getItem('notes') || '[]').find((note: Note) => note.id === params.id)?.title || 'Untitled'), [params.id]
+    )
     function changeTitle() {
         const Title = prompt('Enter the new title of the note', title || 'Untitled')
         if (!Title) return
@@ -54,7 +58,7 @@ export default function Note({ params }: { params: { id: string } }) {
                     <Button variant={"outline"} className="mr-4 mt-4 border-black dark:border-white" onClick={exportToPDF}>
                         <File className="w-4" /> &nbsp; Export as PDF
                     </Button>
-                    <Button variant={"outline"} className="mr-8 mt-4 border-black dark:border-white" onClick={deleteNote}>
+                    <Button variant={"outline"} className="mr-8 mt-4 border-red-500 text-red-500" onClick={deleteNote}>
                         <Trash2 className="w-4" /> &nbsp; Delete Note
                     </Button>
                 </div>

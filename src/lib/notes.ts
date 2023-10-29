@@ -5,21 +5,6 @@ export function fetchNotes(): Note[] {
   return notes;
 }
 
-export function fetchNote(id: string) {
-  const notes = fetchNotes();
-  const note = notes.find((note) => note.id === id);
-  return note;
-}
-
-export function saveNote(note: Note) {
-  try {
-    localStorage.setItem("notes", JSON.stringify([...fetchNotes(), note]));
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
 export function createNewNote(title: string) {
   const note: Note = {
     id: nanoid(10),
