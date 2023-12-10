@@ -12,17 +12,17 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Plus, Folder, StickyNote, Pen } from 'lucide-react'
+import { Plus, StickyNote, Pen } from 'lucide-react'
 import { Button } from "./ui/button";
 import { createNewNote } from "@/lib/notes";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { createNewBoard } from "@/lib/boards";
 
 
 export function Sidebar() {
     const [notes, setNotes] = useState<Note[]>([])
     const [boards, setBoards] = useState<Board[]>([])
-    const [folders, setFolders] = useState<Folder[]>([])
     const [selected, setSelected] = useState('')
     const [selectedType, setSelectedType] = useState('')
     const [selectedName, setSelectedName] = useState('')
@@ -32,7 +32,6 @@ export function Sidebar() {
     useEffect(() => {
         setNotes(JSON.parse(localStorage.getItem('notes') || '[]'))
         setBoards(JSON.parse(localStorage.getItem('boards') || '[]'))
-        setFolders(JSON.parse(localStorage.getItem('folders') || '[]'))
         const id = pathname.split('/')[2]
         if (pathname.includes('/note') && pathname.split('/').length === 3) {
             setSelected(id || '');
@@ -51,6 +50,11 @@ export function Sidebar() {
             if (!title) return
             const { id } = createNewNote(title || 'Untitled')
             window.location.href = `/note/${id}`
+        } else if (type === 'board') {
+            const title = prompt('Enter the title of the board', 'Untitled')
+            if (!title) return
+            const { id } = createNewBoard(title || 'Untitled')
+            window.location.href = `/board/${id}`
         }
     }
 
@@ -77,31 +81,46 @@ export function Sidebar() {
                                 <DropdownMenuItem onClick={() => createNEW("note")}>
                                     <StickyNote className="w-4" /> &nbsp; Create a new Note
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => createNEW("board")}>
                                     <Pen className="w-4" /> &nbsp; Create a new Board
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <Folder className="w-4" /> &nbsp; Create a new Folder
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </Tooltip>
                 </TooltipProvider>
             </div>
-
-            {notes && notes.length > 0 && notes.map((note) => {
-                return (
-                    <a key={note.id} href={`/note/${note.id}`}>
-                        <div className="flex items-center justify-between p-2 border-b hover:bg-gray-100 dark:hover:bg-gray-50/30">
-                            <div className="flex items-center gap-2">
-                                <StickyNote className="w-4" />
-                                <p className="text-sm select-none">{note.title}</p>
+            <h2 className="text-base font-medium select-none p-2 border-b border-black dark:border-white">Notes</h2>
+            <div className="max-h-[36vh] overflow-y-scroll no-scrollbar border-b border-black dark:border-white">
+                {notes && notes.length > 0 && notes.map((note) => {
+                    return (
+                        <a key={note.id} href={`/note/${note.id}`}>
+                            <div className="flex items-center justify-between p-2 border-b hover:bg-gray-100 dark:hover:bg-gray-50/30">
+                                <div className="flex items-center gap-2">
+                                    <StickyNote className="w-4" />
+                                    <p className="text-sm select-none">{note.title}</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                )
-            })
-            }
+                        </a>
+                    )
+                })
+                }
+            </div>
+            <h2 className="text-base font-medium select-none p-2 border-b border-black dark:border-white">Boards</h2>
+            <div className="max-h-[36vh] overflow-y-scroll no-scrollbar">
+                {boards && boards.length > 0 && boards.map((board) => {
+                    return (
+                        <a key={board.id} href={`/board/${board.id}`}>
+                            <div className="flex items-center justify-between p-2 border-b hover:bg-gray-100 dark:hover:bg-gray-50/30">
+                                <div className="flex items-center gap-2">
+                                    <Pen className="w-4" />
+                                    <p className="text-sm select-none">{board.title}</p>
+                                </div>
+                            </div>
+                        </a>
+                    )
+                })
+                }
+            </div>
 
 
         </aside>

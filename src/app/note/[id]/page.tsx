@@ -3,7 +3,6 @@ import { Editor } from "@/components/Editor"
 import { Button } from "@/components/ui/button"
 import { File, EditIcon, Trash2 } from 'lucide-react'
 import { useEffect, useState } from "react";
-import { Note } from "@/types";
 
 function exportToPDF() {
     const title = document.querySelector('#title')!;

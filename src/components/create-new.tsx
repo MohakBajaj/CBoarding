@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useTheme } from "next-themes"
 import { Button } from "./ui/button";
 import { createNewNote } from "@/lib/notes";
+import { createNewBoard } from "@/lib/boards";
 
 export function CreateNew() {
     const { resolvedTheme } = useTheme()
@@ -17,7 +18,13 @@ export function CreateNew() {
                     const { id } = createNewNote(title || 'Untitled')
                     window.location.href = `/note/${id}`
                 }}>Create a New Note</Button>
-                <Button className="mt-8" size="lg">Create a New Board</Button>
+                <Button className="mt-8" size="lg" onClick={() => {
+                    const title = prompt('Enter the title of the board', 'Untitled')
+                    if (!title) return
+                    const { id } = createNewBoard(title || 'Untitled')
+                    window.location.href = `/board/${id}`
+                }
+                }>Create a New Board</Button>
             </div>
         </div>
     )

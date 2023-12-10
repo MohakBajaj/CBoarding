@@ -1,4 +1,4 @@
-import { Note } from "@/types";
+
 import { nanoid } from "nanoid";
 
 export function fetchNotes(): Note[] {

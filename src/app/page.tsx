@@ -4,9 +4,8 @@ import { useEffect } from "react";
 
 function init() {
   console.log("init")
-  if (!!localStorage && !localStorage["notes"] && !localStorage["folders"] && !localStorage["boards"]) {
+  if (!!localStorage && !localStorage["notes"] && !localStorage["boards"]) {
     localStorage.setItem("notes", JSON.stringify([]))
-    localStorage.setItem("folders", JSON.stringify([]))
     localStorage.setItem("boards", JSON.stringify([]))
   }
 }

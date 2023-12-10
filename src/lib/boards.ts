@@ -1,4 +1,3 @@
-import { Board } from "@/types";
 import { nanoid } from "nanoid";
 
 function fetchBoards(): Board[] {
@@ -6,11 +5,10 @@ function fetchBoards(): Board[] {
   return boards;
 }
 
-export function createNewBoard(title: string, content: string) {
+export function createNewBoard(title: string) {
   const board: Board = {
     id: nanoid(10),
     title,
-    content,
     createdAt: new Date().toISOString(),
   };
   localStorage.setItem("boards", JSON.stringify([...fetchBoards(), board]));
