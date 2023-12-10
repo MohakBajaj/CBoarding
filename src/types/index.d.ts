@@ -1,3 +1,5 @@
+import type { DrawProps } from "@/hooks/useDraw";
+
 type Note = {
   id: string;
   title: string;
@@ -15,3 +17,8 @@ type Folder = {
   notes: Note[];
   boards: Board[];
 };
+export interface DrawOptions extends DrawProps {
+  strokeColor: string;
+  strokeWidth: number[];
+  dashGap: number[];
+}
