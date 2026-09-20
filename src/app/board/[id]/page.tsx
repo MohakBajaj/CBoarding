@@ -2,33 +2,34 @@
 
 import { Button } from "@/components/ui/button";
 import { EditIcon, Trash2, ImageDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import DrawingCanvas from "@/components/DrawingCanvas";
 
-export default function Board({ params }: { params: { id: string } }) {
+export default function Board({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params)
     const [title, setTitle] = useState('Untitled')
     useEffect(() =>
-        setTitle(JSON.parse(localStorage.getItem('boards') || '[]').find((board: Board) => board.id === params.id)?.title || 'Untitled'), [params.id]
+        setTitle(JSON.parse(localStorage.getItem('boards') || '[]').find((board: Board) => board.id === id)?.title || 'Untitled'), [id]
     )
     function changeTitle() {
         const Title = prompt('Enter the new title of the board', title || 'Untitled')
         if (!Title) return
         const boards = JSON.parse(localStorage.getItem('boards') || '[]')
-        const board = boards.find((board: Board) => board.id === params.id)
+        const board = boards.find((board: Board) => board.id === id)
         board.title = Title
         localStorage.setItem('boards', JSON.stringify(boards))
         document.querySelector('#title')!.innerHTML = `Title: ${Title}`
     }
     function deleteBoard() {
         const boards = JSON.parse(localStorage.getItem('boards') || '[]')
-        const board = boards.find((board: Board) => board.id === params.id)
+        const board = boards.find((board: Board) => board.id === id)
         const index = boards.indexOf(board)
         boards.splice(index, 1)
         localStorage.setItem('boards', JSON.stringify(boards))
         window.location.href = '/'
     }
     function exportBoard() {
-        const dataURL = localStorage.getItem(`board-${params.id}`);
+        const dataURL = localStorage.getItem(`board-${id}`);
         const link = document.createElement('a');
         link.href = dataURL || "";
         link.download = `${title}.png`;
@@ -55,7 +56,7 @@ export default function Board({ params }: { params: { id: string } }) {
                 </div>
             </div>
             <div id="board" className="border border-black dark:border-white h-[calc(90%)] w-[calc(95%)]">
-                <DrawingCanvas id={params.id} />
+                <DrawingCanvas id={id} />
             </div>
         </main>
     )
